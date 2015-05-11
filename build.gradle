@@ -1,0 +1,86 @@
+apply plugin: 'java'
+apply plugin: 'eclipse'
+apply plugin: 'jacoco'
+apply plugin: 'maven'
+apply plugin: 'signing'
+
+//sourceCompatibility = 1.7
+group = 'com.github.jarod'
+archivesBaseName = 'exocet'
+version = '0.1.0'
+
+jacoco {
+    toolVersion = "0.7.2.201409121644"
+}
+
+repositories {
+  jcenter()
+}
+
+dependencies {
+   testCompile(
+     "junit:junit:4.12",
+   )
+}
+
+task javadocJar(type: Jar) {
+    classifier = 'javadoc'
+    from javadoc
+}
+
+task sourcesJar(type: Jar) {
+    classifier = 'sources'
+    from sourceSets.main.java
+}
+
+artifacts {
+    archives javadocJar, sourcesJar
+}
+
+signing {
+    sign configurations.archives
+}
+
+uploadArchives {
+  repositories {
+    mavenDeployer {
+      beforeDeployment { MavenDeployment deployment -> signing.signPom(deployment) }
+
+      repository(url: repoReleaseUrl) {
+        authentication(userName: repoUsername, password: repoPassword)
+      }
+
+      snapshotRepository(url: repoSnapshotUrl) {
+        authentication(userName: repoUsername, password: repoPassword)
+      }
+
+      pom.project {
+        name 'exocet'
+        packaging 'jar'
+        description 'A set of java utilities.'
+        url 'https://github.com/jarod/exocet'
+
+        scm {
+          connection 'scm:git:https://github.com/jarod/exocet.git'
+          developerConnection 'scm:git:git@github.com:jarod/exocet.git'
+          url 'https://github.com/jarod/exocet'
+        }
+
+        licenses {
+          license {
+            name 'The MIT License'
+            url 'https://github.com/jarod/exocet/blob/master/LICENSE'
+          }
+        }
+
+        developers {
+          developer {
+            id 'jarod_liu'
+            name 'Jarod Liu'
+            email 'liuyuanzhi@gmail.com'
+          }
+        }
+      }
+    }
+  }
+}
