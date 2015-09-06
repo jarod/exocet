@@ -7,10 +7,10 @@ apply plugin: 'signing'
 //sourceCompatibility = 1.7
 group = 'com.github.jarod'
 archivesBaseName = 'exocet'
-version = '0.1.0'
+version = '0.1.1'
 
 jacoco {
-    toolVersion = "0.7.2.201409121644"
+    toolVersion = "0.7.+"
 }
 
 repositories {
@@ -19,7 +19,7 @@ repositories {
 
 dependencies {
    testCompile(
-     "junit:junit:4.12",
+     "junit:junit:4.+",
    )
 }
 
