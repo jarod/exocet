@@ -3,7 +3,6 @@ package com.github.jarod.exocet.time;
 import java.sql.Timestamp;
 import java.time.DayOfWeek;
 import java.time.LocalDateTime;
-import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.TemporalAccessor;
 import java.time.temporal.WeekFields;
@@ -14,7 +13,6 @@ import java.util.concurrent.TimeUnit;
 import com.github.jarod.exocet.concurrent.ExocetExecutor;
 
 public class TimeUtil {
-	private static final ZoneOffset ZONE_OFFSET = ZoneOffset.ofHours(8);
 	protected volatile static long _systemTime = System.currentTimeMillis();
 
 	public static final long MILLIS_PER_SECOND = 1000L;
@@ -87,9 +85,7 @@ public class TimeUtil {
 	}
 
 	public static LocalDateTime localDateTimeNow() {
-		final long second = _systemTime / MILLIS_PER_SECOND;
-		final int nano = (int) (_systemTime % MILLIS_PER_SECOND) * 1_000_000;
-		return LocalDateTime.ofEpochSecond(second, nano, ZONE_OFFSET);
+		return timestampNow().toLocalDateTime();
 	}
 
 	private static final WeekFields weekFields = WeekFields.of(DayOfWeek.MONDAY, 1);
